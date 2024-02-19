@@ -1,20 +1,39 @@
 -- 코드를 입력하세요
-WITH RECURSIVE TIME AS (
+# 풀이 1
+# WITH RECURSIVE TIME AS (
+#     SELECT 0 AS HOUR
+#     UNION ALL
+#     SELECT HOUR+1
+#         FROM TIME
+#         WHERE HOUR < 23
+# )
+
+# SELECT T.HOUR AS HOUR
+#      , IFNULL(A.COUNT, 0) AS COUNT
+#     FROM TIME T 
+#     LEFT JOIN (
+#         SELECT HOUR(DATETIME) AS HOUR
+#              , COUNT(*) AS COUNT
+#             FROM ANIMAL_OUTS
+#             GROUP BY HOUR
+#     ) AS A
+#         ON T.HOUR = A.HOUR
+#     ORDER BY HOUR;
+
+
+# 풀이 2
+WITH RECURSIVE RC AS (
     SELECT 0 AS HOUR
     UNION ALL
     SELECT HOUR+1
-        FROM TIME
-        WHERE HOUR < 23
+        FROM RC
+    WHERE HOUR < 23
 )
 
-SELECT T.HOUR AS HOUR
-     , IFNULL(A.COUNT, 0) AS COUNT
-    FROM TIME T 
-    LEFT JOIN (
-        SELECT HOUR(DATETIME) AS HOUR
-             , COUNT(*) AS COUNT
-            FROM ANIMAL_OUTS
-            GROUP BY HOUR
-    ) AS A
-        ON T.HOUR = A.HOUR
-    ORDER BY HOUR;
+SELECT RC.HOUR
+     , COUNT(A.DATETIME) AS COUNT
+    FROM RC
+    LEFT JOIN ANIMAL_OUTS AS A
+        ON RC.HOUR = HOUR(A.DATETIME)
+    GROUP BY RC.HOUR
+    ORDER BY RC.HOUR

@@ -1,0 +1,28 @@
+-- 코드를 작성해주세요
+# SELECT FISH_COUNT
+#      , MAX_LENGTH
+#      , FISH_TYPE
+#     FROM (
+#         SELECT COUNT(FISH_TYPE) AS FISH_COUNT
+#              , MAX(LENGTH) AS MAX_LENGTH
+#              , AVG(IFNULL(LENGTH, 10)) AS AVG_LENGTH
+#              , FISH_TYPE
+#             FROM FISH_INFO
+#             GROUP BY FISH_TYPE
+#         ) AS B
+#     WHERE AVG_LENGTH >= 33
+#     ORDER BY FISH_TYPE
+
+SELECT
+    COUNT(ID) FISH_COUNT
+    , MAX(LENGTH) MAX_LENGTH
+    , FISH_TYPE
+FROM
+    FISH_INFO
+GROUP BY
+    FISH_TYPE
+HAVING
+    AVG(IFNULL(LENGTH, 10)) >= 33
+ORDER BY
+    FISH_TYPE
+    

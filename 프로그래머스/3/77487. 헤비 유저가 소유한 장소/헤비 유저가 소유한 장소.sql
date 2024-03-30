@@ -9,3 +9,4 @@ SELECT ID
             GROUP BY HOST_ID
             HAVING COUNT(ID) >= 2
     )
+    ORDER BY ID

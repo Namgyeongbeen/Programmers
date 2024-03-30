@@ -6,3 +6,4 @@ SELECT DISTINCT CART_ID
             SELECT CART_ID
                 FROM CART_PRODUCTS
                 WHERE NAME = 'MILK')
+    ORDER BY CART_ID

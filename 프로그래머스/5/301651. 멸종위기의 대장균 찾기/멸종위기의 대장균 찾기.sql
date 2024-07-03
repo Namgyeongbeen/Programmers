@@ -6,18 +6,7 @@
 -- 부모 없는 세대 -> 1세대
 -- 1세대가 부모인 세대 -> 2세대
 -- 2세대가 부모인 세대 -> 3세대
--- ...  => 재귀문 사용!
-
-# WITH RECURSIVE GEN AS (
-#     SELECT ID, PARENT_ID, 1 AS GENERATION
-#         FROM ECOLI_DATA
-#         WHERE PARENT_ID IS NULL
-#     UNION ALL
-#     SELECT E.ID, E.PARENT_ID, G.GENERATION + 1
-#         FROM ECOLI_DATA E
-#         JOIN GEN G
-#             ON E.PARENT_ID = G.ID
-# )       
+-- ...  => 재귀문 사용!   
 
 WITH RECURSIVE GEN AS (
     SELECT ID, PARENT_ID, 1 AS GENERATION

@@ -1,8 +1,11 @@
--- 코드를 입력하세요
-SELECT YEAR(O.SALES_DATE) AS YEAR
-     , MONTH(O.SALES_DATE) AS MONTH
+-- GENDER 컬럼에서 0은 남자 1은 여자. 비어있을 수도 있음.
+-- 연 월 성별로 상품을 구매한 회원 수 출력.
+-- 연 월 성별 기준 오름차순 정렬, 성별 정보가 없으면 결과에서 제외하기.
+
+SELECT YEAR(SALES_DATE) AS YEAR
+     , MONTH(SALES_DATE) AS MONTH
      , U.GENDER
-     , COUNT(DISTINCT U.USER_ID) AS USERS
+     , COUNT(DISTINCT O.USER_ID) AS USERS
     FROM USER_INFO U
     JOIN ONLINE_SALE O
         ON U.USER_ID = O.USER_ID

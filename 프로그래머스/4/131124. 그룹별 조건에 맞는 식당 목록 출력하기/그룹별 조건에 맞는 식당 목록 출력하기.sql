@@ -1,5 +1,5 @@
 -- 리뷰를 가장 많이 작성한 회원의 리뷰들을 조회
--- 회원 이름, 리뷰 텍스트, 리뷰 작성일
+-- 회원 이름, 리뷰 텍스트, 리뷰 작성일 출력.
 -- 리뷰 작성일 오름차순, 리뷰 텍스트 오름차순 정렬
 
 -- 풀이 단계
@@ -8,20 +8,71 @@
 -- 3. 해당 사용자의 리뷰 출력
 
 WITH REVIEW_RANKS AS (
-    SELECT COUNT(*) AS REVIEW_COUNT
-         , MEMBER_ID
-         , DENSE_RANK() OVER(ORDER BY COUNT(*) DESC) AS RANKS
-        FROM REST_REVIEW
-        GROUP BY MEMBER_ID
-)
+SELECT COUNT(*) AS REVIEW_COUNT
+     , DENSE_RANK() OVER(ORDER BY COUNT(*) DESC) AS REVIEW_COUNT_RANK
+     , MEMBER_ID
+    FROM REST_REVIEW
+    GROUP BY MEMBER_ID )
 
 SELECT MEMBER_NAME
      , REVIEW_TEXT
-     , DATE_FORMAT(REVIEW_DATE, '%Y-%m-%d')
+     , DATE_FORMAT(REVIEW_DATE, '%Y-%m-%d') AS REVIEW_DATE
     FROM MEMBER_PROFILE M
-    JOIN REST_REVIEW R1
+    LEFT JOIN REVIEW_RANKS R1
         ON M.MEMBER_ID = R1.MEMBER_ID
-    JOIN REVIEW_RANKS R2
-        ON R1.MEMBER_ID = R2.MEMBER_ID
-    WHERE RANKS = 1
+    LEFT JOIN REST_REVIEW R2
+        ON M.MEMBER_ID = R2.MEMBER_ID
+    WHERE R1.REVIEW_COUNT_RANK = 1
     ORDER BY REVIEW_DATE, REVIEW_TEXT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# WITH REVIEW_RANKS AS (
+#     SELECT COUNT(*) AS REVIEW_COUNT
+#          , MEMBER_ID
+#          , DENSE_RANK() OVER(ORDER BY COUNT(*) DESC) AS RANKS
+#         FROM REST_REVIEW
+#         GROUP BY MEMBER_ID
+# )
+
+# SELECT MEMBER_NAME
+#      , REVIEW_TEXT
+#      , DATE_FORMAT(REVIEW_DATE, '%Y-%m-%d')
+#     FROM MEMBER_PROFILE M
+#     JOIN REST_REVIEW R1
+#         ON M.MEMBER_ID = R1.MEMBER_ID
+#     JOIN REVIEW_RANKS R2
+#         ON R1.MEMBER_ID = R2.MEMBER_ID
+#     WHERE RANKS = 1
+#     ORDER BY REVIEW_DATE, REVIEW_TEXT

@@ -1,5 +1,6 @@
 -- 코드를 작성해주세요
 
+-- 25.02.08
 SELECT E1.ID
      , IFNULL(COUNT(E2.ID), 0) AS CHILD_COUNT
     FROM ECOLI_DATA E1

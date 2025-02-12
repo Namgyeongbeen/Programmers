@@ -2,6 +2,26 @@
 -- 3세대 대장균 ID 출력
 -- 대장균 ID로 오름차순 정렬
 
+-- 25.02.12
+SELECT E3.ID
+    FROM ECOLI_DATA E1
+    LEFT JOIN ECOLI_DATA E2
+        ON E1.ID = E2.PARENT_ID
+    LEFT JOIN ECOLI_DATA E3
+        ON E2.ID = E3.PARENT_ID
+    WHERE E1.PARENT_ID IS NULL AND E3.ID IS NOT NULL
+    ORDER BY E3.ID
+
+
+
+
+
+
+
+
+
+
+
 # SELECT D1.ID, D1.PARENT_ID
 #      , D2.ID, D2.PARENT_ID
 #      , D3.ID, D3.PARENT_ID
@@ -17,20 +37,19 @@
 
 # 위의 쿼리는 JOIN이 많아서 대용량 데이터 처리 할 때엔 성능이 안좋을 수 있음.
 # 재귀쿼리 쓰는게 더 좋음.
-
-WITH RECURSIVE GEN AS(
-    SELECT ID, PARENT_ID, 1 AS GENERATION
-        FROM ECOLI_DATA
-        WHERE PARENT_ID IS NULL     # PARENT_ID가 1인 세대를 1세대로 지정
+# WITH RECURSIVE GEN AS(
+#     SELECT ID, PARENT_ID, 1 AS GENERATION
+#         FROM ECOLI_DATA
+#         WHERE PARENT_ID IS NULL     # PARENT_ID가 1인 세대를 1세대로 지정
     
-    UNION ALL
+#     UNION ALL
     
-    SELECT E.ID, E.PARENT_ID, G.GENERATION + 1  # 재귀문
-        FROM ECOLI_DATA E
-        JOIN GEN G
-            ON E.PARENT_ID = G.ID
-)
+#     SELECT E.ID, E.PARENT_ID, G.GENERATION + 1  # 재귀문
+#         FROM ECOLI_DATA E
+#         JOIN GEN G
+#             ON E.PARENT_ID = G.ID
+# )
 
-SELECT ID
-    FROM GEN
-    WHERE GENERATION = 3
+# SELECT ID
+#     FROM GEN
+#     WHERE GENERATION = 3
